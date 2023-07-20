@@ -15,8 +15,9 @@ function Wiki({destination}) {
       const pages = data.query.pages;
       const pageId = Object.keys(pages)[0];
       const extract = pages[pageId].extract;
+      // console.log(extract);
       const paragraphs=extract.split("\n");
-    //   console.log(paragraphs[0]);
+      console.log(paragraphs[0]);
       return paragraphs[0];
     } catch (error) {
       console.error("Error fetching data:", error);

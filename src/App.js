@@ -31,6 +31,7 @@ function App() {
   const [isResult, setIsResult] = useState(false);
   const [isResultReady, setIsResultReady] = useState(false);
   const [isCollapsed, setisCollapsed] = useState(false);
+
   const handleGenerate = async () => {
     setIsResult(!isResult);
     setisCollapsed(true);
@@ -251,7 +252,7 @@ function App() {
           <div className="content" style={isResult ? null : hide}>
             <Wiki destination={Destination} />
             {isResultReady & isResult ? (
-              <h1> Your plan for {Destination} is ready </h1>
+              <h1> Your plan is ready </h1>
             ) : (
               <img src={loader} className="loader" />
             )}
