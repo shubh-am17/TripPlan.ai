@@ -8,7 +8,7 @@ import loader from "./assets/loader.svg";
 import Options from "./componenets/Options.js";
 import DropDown from "./componenets/DropDown.js";
 import Wiki from './componenets/wiki'
-import parse, { domToReact } from 'html-react-parser';
+import parse from 'html-react-parser';
 
 import { Configuration, OpenAIApi } from "openai";
 const openai = new OpenAIApi(
@@ -152,6 +152,7 @@ function App() {
                 isCollapsed ? (
                   <img
                     src={drop}
+                    alt='arrowDown'
                     className="drop-btn"
                     onClick={() => setisCollapsed(!isCollapsed)}
                   />
@@ -159,6 +160,7 @@ function App() {
                   <img
                     src={up}
                     className="up-btn"
+                    alt='arrowUp'
                     onClick={() => setisCollapsed(!isCollapsed)}
                   />
                 )
@@ -254,7 +256,7 @@ function App() {
             {isResultReady & isResult ? (
               <h1> Your plan is ready </h1>
             ) : (
-              <img src={loader} className="loader" />
+              <img src={loader} alt='loader' className="loader" />
             )}
             <span>{parse(result)}</span>
           </div>
