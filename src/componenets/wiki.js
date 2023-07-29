@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function Wiki({destination}) {
+function Wiki({destination, isResult}) {
   const [data, setdata] = useState("");
   // Function to fetch introductory information about a destination from Wikipedia
   async function fetchDestinationInfo(destination) {
@@ -25,7 +25,9 @@ function Wiki({destination}) {
     }
   }
   // Example usage
-  fetchDestinationInfo(destination)
+
+  if(isResult){
+    fetchDestinationInfo(destination)
     .then((info) => {
       // Display the introductory information on your website
     //   console.log(info);
@@ -34,6 +36,8 @@ function Wiki({destination}) {
     .catch((error) => {
       console.error("Error:", error);
     });
+  }
+  
 
   return <div>{data}</div>;
 }

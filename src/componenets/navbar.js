@@ -3,7 +3,7 @@ import logo from "../assets/logo.svg";
 import gitlogo from "../assets/github.svg";
 function navbar() {
   return (
-    <div className="nav">
+    <nav className="nav">
       <div className="ham">
         <svg
           
@@ -28,13 +28,13 @@ function navbar() {
 
       <div className="nav-links">
         <a
-          href="https://github.com/shubh-am17/ai-travel-planner"
+          href="https://github.com/shubh-am17/TripPlan.ai"
           target="blank"
         >
           <img className="logo" src={gitlogo} height={"30px"} alt="github" />
         </a>
       </div>
-    </div>
+    </nav>
   );
 }
 
