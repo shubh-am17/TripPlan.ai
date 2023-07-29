@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import "./App.css";
 import Navbar from "./componenets/navbar";
-import bg from "./assets/bg.mp4";
+import bg from "./assets/beach.jpg";
 import drop from "./assets/down-arrow.svg";
 import up from "./assets/up-arrow.svg";
 import loader from "./assets/loader.svg";
 import Options from "./componenets/Options.js";
 import DropDown from "./componenets/DropDown.js";
 import Wiki from './componenets/wiki'
-import parse, { domToReact } from 'html-react-parser';
+import parse from 'html-react-parser';
 
 import { Configuration, OpenAIApi } from "openai";
 const openai = new OpenAIApi(
@@ -31,10 +31,12 @@ function App() {
   const [isResult, setIsResult] = useState(false);
   const [isResultReady, setIsResultReady] = useState(false);
   const [isCollapsed, setisCollapsed] = useState(false);
+  const [wikiDest, setwikiDest] = useState("");
 
   const handleGenerate = async () => {
     setIsResult(!isResult);
     setisCollapsed(true);
+    setwikiDest(Destination);
     let interests="";
     let cuisines="";
     let activityTypes="";
@@ -55,7 +57,7 @@ function App() {
           { role: "system", content: "You are an expert Travel Planner." },
           {
             role: "user",
-            content: `Generate a personalized travel itinerary for a trip to ${Destination} with a budget of ${Budget}. The traveler is interested in a ${Duration} days vacation and enjoys ${interests}. Their accomodation preference is ${selectedaccommodationTypes} and they prefer ${Transport} transportation. The itinerary should include ${activityTypes} activities and ${cuisines} dining options. Please provide a detailed itinerary with daily recommendations for ${Duration} days, including suggested destinations, activities, and dining options.Mention Distance of places from the main city and also tell the reason why you recommend that place. Return the itinerary in a HTML format without metadata , CSS ,body,head tags so that I can directly put it into website.`,
+            content: `Generate a personalized travel itinerary for a trip to ${Destination} with a budget of ${Budget}. The traveler is interested in a ${Duration} days vacation and enjoys ${interests}. Their accomodation preference is ${selectedaccommodationTypes} and they prefer ${Transport} transportation. The itinerary should include ${activityTypes} activities and ${cuisines} dining options. Please provide a detailed itinerary with daily recommendations for ${Duration} days, including suggested destinations, activities, and dining options.Mention Distance of places from the main city and also tell the reason why you recommend that place.Return the itinerary in a HTML format without metadata,CSS,body,head tags so that I can directly put it into website.put <br/> tag between days.`,
           },
         ],
         max_tokens: 1000,
@@ -138,9 +140,10 @@ function App() {
       <Navbar />
 
       <div className="box">
-        <video id="video" autoPlay loop muted>
+        {/* <video id="video" autoPlay loop muted>
           <source src={bg} type="video/mp4" />
-        </video>
+        </video> */}
+        <img src={bg} alt='beach' id="background" />
 
         <div className="after-result">
           <div className={isCollapsed ? "content-collapse" : "content"}>
@@ -152,6 +155,7 @@ function App() {
                 isCollapsed ? (
                   <img
                     src={drop}
+                    alt='arrowDown'
                     className="drop-btn"
                     onClick={() => setisCollapsed(!isCollapsed)}
                   />
@@ -159,19 +163,21 @@ function App() {
                   <img
                     src={up}
                     className="up-btn"
+                    alt='arrowUp'
                     onClick={() => setisCollapsed(!isCollapsed)}
                   />
                 )
               ) : null}
             </div>
             <div className="text-input">
-              <p label for="destination">
+              <p label="destination">
                 Enter your destination
               </p>
               <input
                 type="text"
                 id="text"
                 onChange={(e) => setDestination(e.target.value)}
+                required
               />
             </div>
             <div className="acco-travel">
@@ -181,6 +187,8 @@ function App() {
                     type="text"
                     id="text"
                     onChange={(e) => setBudget(e.target.value)}
+                required
+
                   />
                 </div>
                 <div className="text-input">
@@ -189,6 +197,8 @@ function App() {
                     type="text"
                     id="text"
                     onChange={(e) => setDuration(e.target.value)}
+                required
+
                   />
                 </div>
             </div>
@@ -224,9 +234,11 @@ function App() {
                 type="text"
                 id="text"
                 onChange={(e) => setTransport(e.target.value)}
+                required
+
               ></input>
             </div>
-            <div class="acco-travel">
+            <div className="acco-travel">
               <div className="drop-menu">
                 <p>Accomodation</p>
                 <DropDown
@@ -250,11 +262,12 @@ function App() {
           </div>
 
           <div className="content" style={isResult ? null : hide}>
-            <Wiki destination={Destination} />
+            <h3>Quick facts:</h3>
+            <Wiki destination={wikiDest} isResult={isResult} />
             {isResultReady & isResult ? (
               <h1> Your plan is ready </h1>
             ) : (
-              <img src={loader} className="loader" />
+              <img src={loader} alt='loader' className="loader" />
             )}
             <span>{parse(result)}</span>
           </div>
